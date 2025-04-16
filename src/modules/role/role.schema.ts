@@ -9,7 +9,7 @@ export class Role {
   name: string;
 
   @Prop({ required: true })
-  permissions: string[];
+  description: string;
 }
 
 export const RoleSchema = SchemaFactory.createForClass(Role);

@@ -12,17 +12,17 @@ export class RolesController {
     return this.rolesService.findAll();
   }
 
-  @Get(':id')
+  @Get('GetRoleByID:id')
   async findOne(@Param('id') id: string): Promise<Role> {
     return this.rolesService.findOne(id);
   }
 
-  @Post()
+  @Post("AddRole")
   async create(@Body() CreateRoleDto: CreateRoleDto) {
     return this.rolesService.create(CreateRoleDto);
   }
 
-  @Put(':id')
+  @Put('UpdateRole:id')
   async update(
     @Param('id') id: string,
     @Body() CreateRoleDto: CreateRoleDto,
@@ -30,7 +30,7 @@ export class RolesController {
     return this.rolesService.update(id, CreateRoleDto);
   }
 
-  @Delete(':id')
+  @Delete('DeleteRole:id')
   async remove(@Param('id') id: string): Promise<void> {
     return this.rolesService.remove(id);
   }

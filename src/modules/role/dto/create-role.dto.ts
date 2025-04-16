@@ -3,4 +3,5 @@ import { IsString, IsNumber, IsArray, IsOptional, IsMongoId } from 'class-valida
 export class CreateRoleDto {
   @IsString()
   name: string;
+  description: string;
 }
