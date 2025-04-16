@@ -19,6 +19,12 @@ async function bootstrap() {
    // Sử dụng ValidationPipe để tự động validate DTO
    app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(3000);
+   app.enableCors({
+    origin: '*',  
+    methods: 'GET,POST,PUT,DELETE', 
+    allowedHeaders: 'Content-Type, Authorization',  
+  });
+
+  await app.listen(3001);
 }
 bootstrap();

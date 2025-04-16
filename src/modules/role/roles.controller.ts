@@ -7,7 +7,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
-  @Get()
+  @Get("GetRole")
   async findAll(): Promise<Role[]> {
     return this.rolesService.findAll();
   }

@@ -18,7 +18,7 @@ export class RolesService {
     const role = await this.roleModel.findById(id).exec();
     
     if (!role) {
-      throw new Error('Role not found'); // Hoặc bạn có thể ném một lỗi khác
+      throw new Error('Role not found'); 
     }
   
     return role;
