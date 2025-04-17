@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './modules/user/user.module';
 import { RolesModule } from './modules/role/role.module'; 
 import { GroupModule } from './modules/group/group.module'; 
+import { PermissionModule } from './modules/permission/permission.module'; 
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { GroupModule } from './modules/group/group.module';
     UsersModule,
     AuthModule,
     RolesModule,
-    GroupModule
+    GroupModule,
+    PermissionModule
   ],
 })
 export class AppModule {}

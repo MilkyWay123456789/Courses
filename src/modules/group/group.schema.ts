@@ -7,7 +7,7 @@ export type GroupDocument = Group & Document;
 export class Group {
   @Prop({ required: true, unique: true })
   name: string;
-
+  @Prop()
   description: string;
 }
 
