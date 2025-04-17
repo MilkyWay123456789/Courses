@@ -11,29 +11,29 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
-  @Post()
+  @Post("AddCourse")
   create(@Body() body: any) {
     return this.courseService.create(body);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin') 
-  @Get()
+  @Get("GetCourse")
   findAll() {
     return this.courseService.findAll();
   }
 
-  @Get(':id')
+  @Get('GetCourseByID/:id')
   findOne(@Param('id') id: string) {
     return this.courseService.findById(id);
   }
 
-  @Put(':id')
+  @Put('UpdateCourse/:id')
   update(@Param('id') id: string, @Body() body: any) {
     return this.courseService.update(id, body);
   }
 
-  @Delete(':id')
+  @Delete('DeleteCourse/:id')
   delete(@Param('id') id: string) {
     return this.courseService.delete(id);
   }
