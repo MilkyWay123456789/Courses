@@ -8,7 +8,6 @@ export class Group {
   @Prop({ required: true, unique: true })
   name: string;
 
-  @Prop({ required: true })
   description: string;
 }
 

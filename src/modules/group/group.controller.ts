@@ -7,22 +7,22 @@ import { CreateGroupDto } from './dto/create-group.dto';
 export class GroupController {
   constructor(private readonly groupsService: GroupService) {}
 
-  @Get("Getgroup")
+  @Get("GetGroup")
   async findAll(): Promise<Group[]> {
     return this.groupsService.findAll();
   }
 
-  @Get('GetgroupByID/:id')
+  @Get('GetGroupByID/:id')
   async findOne(@Param('id') id: string): Promise<Group> {
     return this.groupsService.findOne(id);
   }
 
-  @Post("Addgroup")
+  @Post("AddGroup")
   async create(@Body() CreateGroupDto: CreateGroupDto) {
     return this.groupsService.create(CreateGroupDto);
   }
 
-  @Put('Updategroup/:id')
+  @Put('UpdateGroup/:id')
   async update(
     @Param('id') id: string,
     @Body() CreateGroupDto: CreateGroupDto,
@@ -30,7 +30,7 @@ export class GroupController {
     return this.groupsService.update(id, CreateGroupDto);
   }
 
-  @Delete('Deletegroup/:id')
+  @Delete('DeleteGroup/:id')
   async remove(@Param('id') id: string): Promise<void> {
     return this.groupsService.remove(id);
   }
