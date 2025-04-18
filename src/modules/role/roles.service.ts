@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Role } from './role.schema';
+import { Permission } from '../permission/permission.schema';
 import { CreateRoleDto } from './dto/create-role.dto';
 
 @Injectable()
 export class RolesService {
-  constructor(@InjectModel(Role.name) private roleModel: Model<Role>) {}
+  constructor(@InjectModel(Role.name) private roleModel: Model<Role>,
+    @InjectModel(Permission.name) private permissionModel: Model<Permission>) {}
 
   // Lấy tất cả roles
   async findAll(): Promise<Role[]> {
@@ -46,6 +48,9 @@ async update(id: string, createRoleDto: CreateRoleDto): Promise<Role> {
   
   // Xóa role
   async remove(id: string): Promise<void> {
+    //Xóa permission theo roleId
+    await this.permissionModel.deleteMany({ roleId: id }).exec(); 
+    //Xóa role
     await this.roleModel.findByIdAndDelete(id).exec();
   }
 }

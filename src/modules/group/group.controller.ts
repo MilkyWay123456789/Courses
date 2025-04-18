@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, Query } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { Group } from './group.schema';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -7,9 +7,9 @@ import { CreateGroupDto } from './dto/create-group.dto';
 export class GroupController {
   constructor(private readonly groupsService: GroupService) {}
 
-  @Get("GetGroup")
-  async findAll(): Promise<Group[]> {
-    return this.groupsService.findAll();
+  @Get('GetGroup')
+  async findAll(@Query('keyword') keyword?: string): Promise<Group[]> {
+    return this.groupsService.findAll(keyword);
   }
 
   @Get('GetGroupByID/:id')
