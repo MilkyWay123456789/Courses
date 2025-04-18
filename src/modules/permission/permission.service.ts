@@ -25,6 +25,6 @@ async findByGroupId(groupId: string): Promise<Permission[]> {
 
   // Xóa Permission
   async remove(roleid: string): Promise<void> {
-    await this.PermissionModel.findByIdAndDelete(roleid).exec();
+    await this.PermissionModel.deleteMany({ groupId: roleid }).exec();
   }
 }
