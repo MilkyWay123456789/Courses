@@ -5,13 +5,13 @@ export type PermissionDocument = Permission & Document;
 
 @Schema()
 export class Permission {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   roleId: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   groupId: string;
   @Prop()
-  enabled: boolean;
+  enable: boolean;
 }
 
 export const PermissionSchema = SchemaFactory.createForClass(Permission);

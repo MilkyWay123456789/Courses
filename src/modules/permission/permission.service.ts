@@ -12,29 +12,16 @@ export class PermissionService {
     @InjectModel(Role.name) private RoleModel: Model<Role>,
 ) {}
 
-  // Lấy Permission theo role
-  async findByGroupId(groupId: string): Promise<{ roles: Role[] }> {
-    // Tìm tất cả các permission liên quan đến groupId
-    const permissions = await this.PermissionModel.find({ groupId }).exec();
-  
-    // Lấy tất cả các roleId từ permission
-    const roleIds = permissions.map(permission => permission.roleId);
-  
-    // Tìm tất cả các role dựa trên các roleId tìm được
-    const roles = await this.RoleModel.find({ _id: { $in: roleIds } }).exec();
-  
-    return {
-      roles, // Trả về danh sách các role
-    };
-  }
-  
-  
+//Get danh sách theo group
+async findByGroupId(groupId: string): Promise<Permission[]> {
+  return this.PermissionModel.find({ groupId }).exec();
+}
+
   
   // Tạo Permission mới
-  async create(CreatePermissionDto: CreatePermissionDto): Promise<Permission> {
-    const createdPermission = new this.PermissionModel(CreatePermissionDto);
-    return createdPermission.save();
-  }
+  async createMany(permissions: CreatePermissionDto[]): Promise<any> {
+    return this.PermissionModel.insertMany(permissions);
+}
 
   // Xóa Permission
   async remove(roleid: string): Promise<void> {
