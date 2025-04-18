@@ -7,7 +7,7 @@ export type RoleDocument = Role & Document;
 export class Role {
   @Prop({ required: true, unique: true })
   name: string;
-
+  @Prop()
   description: string;
 }
 
