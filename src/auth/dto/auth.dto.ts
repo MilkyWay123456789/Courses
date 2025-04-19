@@ -11,6 +11,5 @@ export class LoginDto {
 }
 
 export class RegisterDto extends LoginDto {
-  @IsNotEmpty()
   name: string;
 }
