@@ -47,7 +47,9 @@ export class AuthService {
     const newUser = await this.usersService.create({
       email,
       password: hashedPassword,
-    }); // Tạo user mới trong cơ sở dữ liệu
+      name,
+      role: 'user', 
+    }); 
 
     const payload = { sub: newUser._id, email: newUser.email, role: newUser.role };
     return {
