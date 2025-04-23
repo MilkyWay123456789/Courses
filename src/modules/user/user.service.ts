@@ -1,5 +1,7 @@
 // src/users/users.service.ts
-import { Injectable, NotFoundException, BadRequestException  } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException, BadRequestException  } from '@nestjs/common';
+import {CACHE_MANAGER} from '@nestjs/cache-manager'; 
+import { Cache } from 'cache-manager';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/user.dto';
@@ -10,7 +12,9 @@ import { User } from './user.type';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('User') private userModel: Model<User>) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @InjectModel('User') private userModel: Model<User>) {}
 
   async create(dto: CreateUserDto): Promise<User> {
     const user = new this.userModel(dto);
@@ -18,28 +22,40 @@ export class UsersService {
   }
 
   //Hàm get all user và phân trang
-  async findAll(
-    page: number = 1,
-    limit: number = 10,
-    keyword?: string
-  ): Promise<{ data: User[]; total: number }> {
+  async findAll(page = 1, limit = 10, keyword?: string): Promise<{ data: User[]; total: number }> {
     const skip = (page - 1) * limit;
-  
+    const key = `users:${page}:${limit}:${keyword ?? ''}`;
+
+    // 🔍 Kiểm tra cache
+    const cached = await this.cacheManager.get<{ data: User[]; total: number }>(key);
+    if (cached) {
+      console.log('🧠 Cache hit:', key);
+      return cached;
+    }
+
+    console.log('🚀 Cache miss:', key);
+
+    // 🔍 Query DB
     const filter = keyword
       ? {
           $or: [
             { email: { $regex: keyword, $options: 'i' } },
-            { name: { $regex: keyword, $options: 'i' } }, // Nếu schema có field name
+            { name: { $regex: keyword, $options: 'i' } },
           ],
         }
       : {};
-  
+
     const [data, total] = await Promise.all([
       this.userModel.find(filter).skip(skip).limit(limit).exec(),
       this.userModel.countDocuments(filter).exec(),
     ]);
-  
-    return { data, total };
+
+    const result = { data, total };
+
+    // 💾 Lưu vào Redis
+    await this.cacheManager.set(key, result, 60); // TTL = 60s
+
+    return result;
   }
    
 
